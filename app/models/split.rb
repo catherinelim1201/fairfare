@@ -8,4 +8,8 @@ class Split < ApplicationRecord
   validates :name, presence: true
   validates :date, presence: true
   validates :status, presence: true
+
+  def members_excluding_current_user
+    members.filter { |member| member.user_id != current_user.id }
+  end
 end

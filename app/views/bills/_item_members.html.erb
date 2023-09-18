@@ -1,0 +1,5 @@
+<% item.members.each do |member| %>
+  <span id="item-<%= item.id %>-member-<%= member.id %>" class="badge rounded-pill" style="background: #7DB9B6">
+   <%= member.name %>
+  </span>
+<% end %>

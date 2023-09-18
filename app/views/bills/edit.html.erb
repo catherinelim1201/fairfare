@@ -1,0 +1,22 @@
+<div class='container' style="overflow-y: scroll; background: white; height: 100vh; width: 100vw; max-width: 500px; padding-bottom: 100px;">
+  <div style="padding-top: 5vh;">
+    <%= link_to "Back", split_bill_path(@split, @bill)  %>
+    <br><br>
+   <h4><%= @split.name %></h4>
+    <br>
+
+    <h4>Name of establishment: </h4>
+    <%= simple_form_for [@split, @bill] do |f| %>
+      <%= f.input :merchant %>
+
+      <hr>
+
+      <h4>Enter items: </h4>
+
+      <%= render 'item_form_input', f: f %>
+
+      <%= f.submit class: "btn btn-success" %>
+
+    <% end %>
+  </div>
+</div>

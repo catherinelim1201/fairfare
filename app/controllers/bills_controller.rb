@@ -25,7 +25,7 @@ class BillsController < ApplicationController
       # schedule a background job
       ParseReceiptJob.perform_later(@bill)
 
-      redirect_to root_path # change to loading page
+      redirect_to split_bill_path(@bill.split, @bill) # change to loading page
       # check sidekiq background jobs on what to do when the json is obtained from ocr
     else
       raise
@@ -38,6 +38,15 @@ class BillsController < ApplicationController
 
   def show
     @bill = Bill.find(params[:id])
+
+    if @bill.scraping_data?
+      render :scraping
+    else
+      render :show
+    end
+  end
+
+  def scraping
   end
 
   def new
@@ -56,6 +65,21 @@ class BillsController < ApplicationController
       redirect_to :show
     else
       render :new
+    end
+  end
+
+  def edit
+    @bill = Bill.find(params[:id])
+    @split = @bill.split
+  end
+
+  def update
+    @bill = Bill.find(params[:id])
+    @split = @bill.split
+    if @bill.update(bill_params)
+      redirect_to split_bill_path(@bill.split, @bill)
+    else
+      render :edit, notice: "Something went wrong", status: :unprocessable_entity
     end
   end
 

@@ -1,5 +1,20 @@
-<%= f.simple_fields_for(:items) do |ff| %>
-  <%= ff.input :name %>
-  <%= ff.input :price %>
-  <%= ff.input :quantity %>
-<% end %>
+<div data-controller="add-bill-item-field">
+  <div data-add-bill-item-field-target="itemFields">
+    <%= f.simple_fields_for :items do |ff| %>
+      <div class="item">
+        <%= ff.input :name %>
+        <%= ff.input :price %>
+        <%= ff.input :quantity %>
+        <% if ff.object.id %>
+          <%= link_to "Delete Item", item_path(ff.object), style: "color: red;", data: { "turbo-method": :delete } %>
+        <% end %>
+      </div>
+      <hr>
+    <% end %>
+  </div>
+
+  <button data-action="click->add-bill-item-field#addField" class="btn btn-info btn-sm">
+    Add Another Item
+  </button>
+  <br><br>
+</div>

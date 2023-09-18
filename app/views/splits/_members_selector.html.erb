@@ -1,0 +1,26 @@
+<% members.each do |member|  %>
+  <div class="card member-card"
+       style="
+       margin: 0.5rem;
+         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;"
+       data-action="click->filter-contacts#select"
+       data-member-name="<%= member.name %>"
+       data-member-phone="<%= member.phone_number %>"
+  >
+    <%= member.name %> <small><%= member.phone_number %></small>
+  </div>
+<% end %>
+
+<style>
+  .member-card {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background: #f6f6fa; border-color: #f6f6fa;
+  }
+
+  .member-card:hover {
+      color: white;
+      background: #b6aacc;
+  }
+</style>

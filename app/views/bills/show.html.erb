@@ -1,1 +1,79 @@
-<h1>Test</h1>
+<div
+     data-controller="bill-subscription"
+     data-bill-subscription-bill-id-value="<%= @bill.id %>"
+>
+  <div class='container' style="position: relative; background: white; overflow-y: scroll; height: 100vh; width: 100vw; max-width: 500px;">
+    <br><br>
+    <div style="position: absolute; right: 1rem; top: 1rem;">
+      <%= link_to "Edit Bill", edit_bill_path(@bill), class: "btn btn-sm btn-dark" %>
+
+      <button class="btn btn-sm btn-pri" data-controller="hello" data-hello-split-name-value="<%= @bill.split.name %>"  data-hello-invite-value="<%= @bill.split.invite_code %>" data-action="click->hello#getInvitationCode">
+        Get Invite Link
+      </button>
+    </div>
+
+    <small>
+      <strong><%= current_user.name %></strong> paid the bill <br>
+      at <%= @bill.merchant || @bill.merchant_name || "Undefined" %> <br>
+      on <small><%= @bill.split.date %></small>
+    </small>
+    <br> <br>
+    <div>
+      Total Bill: <%= @bill.total_bill %> <br>
+      Total Tax: <%= @bill.total_tax %>
+    </div>
+    <br>
+    <% @bill.items.each do |item| %>
+      <%= render "bills/item_members_form", item: %>
+    <% end %>
+
+    <div style="height: 100px;">
+    </div>
+  </div>
+</div>
+
+<style>
+  legend {
+    font-size: 0.8rem !important;
+    color: grey;
+  }
+
+  .card-top {
+    padding: 10px;
+    background: #6f5b9d;
+    color:white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  .card-bottom {
+      padding: 10px;
+      background: #23233a;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+  }
+
+  .btn-pri {
+    background: #7DB9B6;
+    color: white;
+  }
+
+  .btn-pri:hover {
+      background: #4b7875;
+      color: white;
+  }
+
+  .btn-pri:focus {
+      background: #4b7875;
+      color: white;
+  }
+
+  .btn-pri:active {
+      background: #4b7875 !important;
+      color: white !important;
+  }
+
+   .hidden {
+       display: none;
+   }
+</style>

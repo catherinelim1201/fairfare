@@ -1,28 +1,95 @@
-<div class="container" data-controller="filter-contacts">
-
-  <h1>Add members</h1>
-
-
+<div class='container' data-controller="filter-contacts" data-filter-contacts-split-id-value="<%= @split.id %>" style="background: white; overflow-y: scroll; padding: 2rem; height: 100vh; width: 100vw; max-width: 500px;">
   <% @split.members.each do |member| %>
-    <p><%= member.first_name %></p>
-  <% end %>
-
-  <%= simple_form_for([@split, @member]) do |f| %>
-    <%= f.input :first_name, input_html: {
-        placeholder: 'Start typing to search for contact',
-        data: { action: "keyup->filter-contacts#filterByFirstName" }
-      } %>
-    <%= f.input :last_name %>
-    <%= f.input :phone_number %>
-    <%= f.submit %>
-  <% end %>
-
-  <h2 class="mt-4" data-filter-contacts-target="list">Select existing contacts</h2>
-  <ul class="list-group">
-    <% @available_contacts.each do |contact| %>
-      <li class="list-group-item">
-        <%= link_to "#{contact.full_name} (#{contact.phone_number})", split_add_existing_contact_path(@split, contact) %>
-      </li>
+    <%= link_to split_members_path(member_id: member.id, split_id: @split.id),
+         style: "text-decoration: none;", data: {
+      turbo_method: :delete, turbo_confirm: "Remove #{member.name}?" } do %>
+      <span class="badge rounded-pill" style="background: #7DB9B6">
+        <%= member.name %> <i class="fa fa-times" aria-hidden="true"></i>
+      </span>
     <% end %>
-  </ul>
+  <% end %>
+
+  <hr>
+
+  <div class="card" style="
+  position: sticky; top: 0;
+  z-index: 100000;
+  background: #4D455D;
+  border-radius: 10px;
+  color: white;
+  padding: 1rem;">
+    <%= simple_form_for([@split, @member], url: split_split_members_path(@split)) do |f| %>
+      <div class="row">
+        <div class="col">
+          <%= f.input :name,
+          label_html: {
+            style:"font-size: 0.75rem;"
+          },
+          input_html: {
+            data: { filter_contacts_target: "name", action: "keyup->filter-contacts#search" }
+          } %>
+        </div>
+        <div class="col">
+          <%= f.input :phone_number,
+                      label_html: {
+                        style:"font-size: 0.75rem;"
+                      },
+                      input_html: {
+                        maxlength: 8,
+                        data: { filter_contacts_target: "phone", action: "keyup->filter-contacts#search" } } %>
+        </div>
+      </div>
+      <div class="d-grid gap-2">
+        <%= f.submit "Add Friend", class: "btn" %>
+      </div>
+      <div align="center" style="padding-top: 0.8rem;">
+        <small
+          data-action="click->filter-contacts#clear"
+          style="
+          font-size: 0.8rem;
+          text-decoration: underline;
+        text-decoration-style: dotted;">Clear Fields</small>
+      </div>
+    <% end %>
+  </div>
+
+  <div data-filter-contacts-target="searchedContacts">
+    <%= render "splits/members_selector", members: @available_contacts %>
+  </div>
+
+<!--  <h2 class="mt-4" data-filter-contacts-target="list">Select existing contacts</h2>-->
+<!--  <ul class="list-group">-->
+    <%# @available_contacts.each do |contact| %>
+<!--      <li class="list-group-item">-->
+        <%#= link_to "#{contact.full_name} (#{contact.phone_number})", split_add_existing_contact_path(@split, contact) %>
+<!--      </li>-->
+    <%# end %>
+<!--  </ul>-->
+    <% unless @split.members.empty? %>
+        <div style="position: fixed; bottom: 100px; right: 50%; transform: translate(50%)">
+        <%= link_to "Upload Receipt", receipt_split_bills_path, class: "btn", style: "
+            background: #E96479;
+        "%>
+        <%= link_to "Manual Input", new_split_bill_path(@split), class: "btn", style: "
+            background: #E96479;
+        "%>
+        </div>
+    <% end %>
+
 </div>
+
+
+
+<style>
+    .btn {
+        background: #E96479;
+        color: white;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+        background: #E96479;
+        color: white;
+    }
+</style>
+

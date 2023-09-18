@@ -1,10 +1,13 @@
 .navbar-lewagon {
+  z-index: 1000;
   justify-content: space-evenly;
   background: $ff-purple;
   height: 80px;
-  width: 100%;
+  width: 100vw;
+  max-width: 500px;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
   position: fixed;
 }
 

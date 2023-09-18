@@ -1,10 +1,19 @@
 require 'securerandom'
 
 class SplitsController < ApplicationController
+  def invite
+    @split = Split.find_by(invite_code:params[:code])
+
+    if current_user
+      redirect_to split_path(@split)
+    end
+  end
+
   def index
   end
 
   def show
+    @split = Split.find(params[:id])
   end
 
   def new
@@ -36,6 +45,7 @@ class SplitsController < ApplicationController
   def add_members
     @split = Split.find(params[:split_id])
     @member = Member.new
+    pp current_user.contacts
     @available_contacts = current_user.contacts - @split.members
   end
 

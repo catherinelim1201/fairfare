@@ -1,6 +1,26 @@
-<h1>Create a new Split!</h1>
-<%= simple_form_for(@split) do |f| %>
-  <%= f.input :name %>
-  <%= f.input :date %>
-  <%= f.submit "Add members" %>
-<% end %>
+<div class='container' style="background: white; padding: 2rem; height: 100vh; width: 100vw; max-width: 500px;">
+  <div style="height: 4rem;"></div>
+  <h4 align="center">Create a new Split!</h4>
+  <div style="height: 4rem;"></div>
+
+  <div class='card' style="padding: 1rem; border-radius: 10px; background: #4D455D; color: white; border-color: #4D455D;">
+  <%= simple_form_for(@split) do |f| %>
+    <%= f.input :name, placeholder: "Siam Diu" %>
+    <%= f.input :date %>
+    <%= f.submit "Add members", class: "btn", style: "margin-top: 1rem; float: right;" %>
+  <% end %>
+  </div>
+</div>
+
+<style>
+  .btn {
+      background: #E96479;
+      color: white;
+  }
+
+  .btn:hover {
+    opacity: 0.8;
+    background: #E96479;
+    color: white;
+  }
+</style>

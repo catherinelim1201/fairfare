@@ -1,3 +1,9 @@
+<% if params[:code]
+    session[:code] = params[:code]
+  else
+    session[:code] = nil
+  end %>
+
 <div class="container-fluid page-padding d-flex">
 
   <div class="login-form">
@@ -8,10 +14,12 @@
       <%= f.error_notification %>
 
       <div class="form-inputs">
-        <%= f.input :email,
-                    required: true,
-                    autofocus: true,
-                    input_html: { autocomplete: "email" }%>
+        <%= f.input :name,
+                    required: true %>
+
+        <%= f.input :phone_number,
+                    required: true %>
+
         <%= f.input :password,
                     required: true,
                     hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),

@@ -12,26 +12,34 @@ require 'date'
 require 'securerandom'
 require 'pry-byebug'
 
-seed_members = true
-seed_users = true
-seed_splits = true
-seed_bills_and_items = true
+seed_members = false
+seed_users = false
+seed_splits = false
+seed_bills_and_items = false
 # seed_payers = true
 # seed_items = true
+
+ItemMember.destroy_all
+SplitMember.destroy_all
+Item.destroy_all
+Bill.destroy_all
+Member.destroy_all
+Payer.destroy_all
+Split.destroy_all
+User.destroy_all
+
 
 if seed_members
   puts "\n\n===== Creating members =====\n"
 
   puts 'clearing old data...'
-  Member.destroy_all
   # phone_no = "#{["8","9"].sample}#{7.times { rand(9).to_s }}"
   # phone_no = (8..9).to_a.sample.to_s + rand((10**6)..((10**7) - 1)).to_s
 
   members = []
   puts "Creating John Doe..."
   member1 = Member.create!(
-    first_name: "John",
-    last_name: "Doe",
+    name: "John Doe",
     phone_number: "91231239"
   )
   puts "created John Doe.\n\n"
@@ -39,22 +47,20 @@ if seed_members
   puts "Creating 10 Members with accounts"
   10.times do
     member = Member.create!(
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
+      name: Faker::Name.first_name + ' ' + Faker::Name.last_name,
       phone_number: "91239123"
     )
     members << member
-    puts "created #{member.first_name}."
+    puts "created #{member.name}."
   end
 
   puts "Creating 10 Members without accounts"
   10.times do
     member = Member.create!(
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
+      name: Faker::Name.first_name + ' ' + Faker::Name.last_name,
       phone_number: "91239123"
     )
-    puts "created #{member.first_name}."
+    puts "created #{member.name}."
   end
 end
 
@@ -64,7 +70,6 @@ if seed_users
   puts "===== Creating Users =====\n\n"
 
   puts 'clearing old data'
-  User.destroy_all
   users = []
 
   user1 = User.create!(
@@ -92,7 +97,6 @@ if seed_splits
   puts "\n\n===== Creating splits =====\n"
 
   puts 'clearing old data...'
-  Split.destroy_all
 
   def split_date
     Date.today + rand(10).days
@@ -166,7 +170,7 @@ if seed_bills_and_items
         bill:,
         member: bill_members[(rand(bill_members.count))]
       )
-      puts "    -created #{payer.member.first_name} as a payer"
+      puts "    -created #{payer.member.name} as a payer"
     end
   end
 
@@ -180,7 +184,7 @@ if seed_bills_and_items
           item:,
           member: bill_members[rand(bill_members.count)]
         )
-        puts "    -created #{item_member.member.first_name} as a member to item #{item.name}"
+        puts "    -created #{item_member.member.name} as a member to item #{item.name}"
       end
     end
   end
@@ -201,8 +205,6 @@ if seed_bills_and_items
   puts "\n\n===== Creating bills & items =====\n"
 
   puts 'clearing old data...'
-  Bill.destroy_all
-  Item.destroy_all
 
   Split.all.each { |split| create_bills(split) }
 

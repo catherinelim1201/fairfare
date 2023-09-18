@@ -1,20 +1,36 @@
-<div class="m-5">
-    <%= link_to "Back", root_path, class:"btn btn-primary" %>
-    <h1 class="mt-4">
-      Upload Receipt
-    </h1>
 
-  <div class="row justify-content-center">
-    <div class="col-sm-8 my-3">
+<div class='container' data-controller="image-preview" style="position: relative; background: white; padding: 2rem; height: 100vh; width: 100vw; max-width: 500px;">
+  <div style="height: 50vh" align="center">
+    <img id="preview" src="https://static.vecteezy.com/system/resources/previews/006/657/739/original/payment-receipt-with-coin-cartoon-illustration-flat-isolated-object-free-vector.jpg" class="img-fluid" style="max-height: 40vh;" />
+  </div>
+  <div>
+  <%= form_with url: upload_split_bills_path(@split), method: :post do  |form| %>
     <div>
-        <%= form_with url: upload_split_bills_path(@split), method: :post, class: "d-flex" do  |form| %>
-          <%= form.label :image, 'Upload Photo' %>
-          <%= form.file_field :image %>
-        </div>
-        <div class="my-5">
-          <%= submit_tag "Submit", class:"btn btn-primary" %>
-        </div>
-      <% end %>
+      <small style="color: #edacb6"><strong>Upload Photo of Receipt</strong></small><br>
+      <%= form.file_field :image, class: "form-control", required: true, data: { action: "change->image-preview#preview" } %>
     </div>
+    <div>
+      <%= submit_tag "Submit", class: "btn btn-primary form-control" %>
+    </div>
+  <% end %>
   </div>
 </div>
+
+<style>
+  #preview {
+    border-radius: 10px;
+  }
+
+  .btn {
+  background: #E96479;
+  color: white;
+  }
+
+  .btn:hover {
+  opacity: 0.8;
+  background: #E96479;
+  color: white;
+  }
+</style>
+
+

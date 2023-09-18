@@ -1,0 +1,7 @@
+account_sid = 'ACebf9f39c396c95f5f42eb121a9f98a01'
+auth_token = '3a75dae2dd3309a23260dc2e17656282'
+@client = Twilio::REST::Client.new(account_sid, auth_token)
+
+message = @client.messages.create(
+    to: '+6590066259'
+)

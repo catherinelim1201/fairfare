@@ -1,0 +1,49 @@
+<div class='container' style="background: white; height: 100vh; width: 100vw; max-width: 500px;">
+  <div style="padding-top: 10vh;">
+
+    <div style="
+    pointer-events: none;
+      margin-bottom: 5vh;
+      border-radius: 20px;
+      overflow: hidden;
+      width:100%;height:0;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/l2SpZkQ0XT1XtKus0" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+
+    <div style="font-size: 1.2rem;">
+      <i id="loading_messages" >
+      </i>
+    </div>
+  </div>
+</div>
+
+<script>
+    let i = 0;
+    let j = 0;
+    let banters = [
+        "Footing the bill...",
+        "Scanning the receipt...",
+        "Checking item by item...",
+        "Whoa that was expensive...",
+        "Inflation is painful isn't it...",
+        "Time to eat grass for the rest of the month..."
+    ];
+    let speed = 100;
+
+    function typeWriter(button) {
+        // console.log(button.id);
+        if (i < banters.length) {
+            if (j < banters[i].length) {
+                document.getElementById("loading_messages").innerHTML += banters[i].charAt(j);
+                j++;
+            } else {
+                document.getElementById("loading_messages").innerHTML += "<br>";
+                i++;
+                j = 0;
+            }
+        } else {
+            location.reload();
+        }
+        setTimeout(typeWriter, speed);
+    }
+
+    typeWriter();
+</script>

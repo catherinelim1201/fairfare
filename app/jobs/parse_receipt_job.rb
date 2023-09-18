@@ -2,13 +2,11 @@ class ParseReceiptJob < ApplicationJob
   queue_as :default
 
   def perform(bill)
-    # require 'open-uri'
     url = Cloudinary::Utils.cloudinary_url("#{ENV["RAILS_ENV"]}/#{bill.photo.key}", quality: "auto:low")
 
-    # result = URI.open("https://api.ocr.space/parse/imageurl?apikey=K88423119288957&url=#{url}").read
-    # json_result = JSON.parse(result)
+    receipt_data = Mindee::ExtractDataFromReceipt.(url:)
+    Mindee::Factory::CreateItemsFromReceiptData.(bill:, receipt_data:)
 
-    result = ExtractTextFromReceipt.(url:)
-    bill.update(receipt_data: result)
+    bill.update(receipt_data:)
   end
 end

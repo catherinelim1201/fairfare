@@ -1,11 +1,18 @@
+<% if params[:code]
+     session[:code] = params[:code]
+   else
+     session[:code] = nil
+   end %>
+
+
 <div class="container-fluid page-padding d-flex">
 
   <div class="login-form">
-    <h2>Log in</h2>
+    <h2>Owe $ Pay $</h2>
 
     <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="form-inputs">
-        <%= f.input :email,
+        <%= f.input :phone_number,
                     required: false,
                     autofocus: true,
                     input_html: { autocomplete: "email" } %>

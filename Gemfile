@@ -83,3 +83,7 @@ gem 'faker'
 gem "cloudinary"
 gem "sidekiq"
 gem "sidekiq-failures", "~> 1.0"
+gem "twilio-ruby"
+gem 'pg_search'
+gem "rails_admin", "3.0"
+gem "sassc-rails"

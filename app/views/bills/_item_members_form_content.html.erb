@@ -1,0 +1,21 @@
+<% item.bill.split.members.each do |member| %>
+  <div style="display: flex; justify-content: space-between">
+    <%= member.name %>
+    <div style="display: flex;">
+      <% unless item.members.include? member %>
+        <%= form_with url: assign_members_item_path(item), data: {action: "submit->add-splitees#update"} do |f| %>
+          <%= hidden_field_tag "member_id", member.id  %>
+          <%= hidden_field_tag "remove", false %>
+          <%= f.submit "+", class: "btn btn-sm btn-pri" %>
+        <% end %>
+      <% else %>
+        <%= form_with url: assign_members_item_path(item), data: {action: "submit->add-splitees#update"} do |f| %>
+          <%= hidden_field_tag "member_id", member.id  %>
+          <%= hidden_field_tag "remove", true %>
+          <%= f.submit "-", class: "btn btn-sm btn-light", style: "" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <br>
+<% end %>
