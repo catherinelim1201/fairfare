@@ -23,21 +23,24 @@ class ContactsController < ApplicationController
 
   def index
     # user = User.requests_for(current_user)
-    @split_ids = current_user.split_ids
+    # @split_ids = current_user.split_ids
 
-    @splits = []
+    # @splits = []
 
-    @split_ids.each do |split_id|
-      @split = Split.find(split_id)
-      @splits << @split
+    # @split_ids.each do |split_id|
+    #   @split = Split.find(split_id)
+    #   @splits << @split
 
-      @splitmember = SplitMember.find_by(split_id: split_id)
-      @member = Member.find(@splitmember.member_id)
-      @contact = Contact.find(@member.id)
-      raise
+    #   @splitmember = SplitMember.find_by(split_id: split_id)
+    #   @member = Member.find(@splitmember.member_id)
+    #   @contact = Contact.find(@member.id)
+    #   raise
 
-    end
 
+    # end
+
+
+    # current_user.member.splits
     # @split_members = []
     # @split_member_ids = @split.split_member.id
     # @split_member_ids.each do |split_member_id|

@@ -4,25 +4,15 @@ GET /contacts/:id (cath)
 Show all splits shared with each contact
  %>
 
-<%#
-<div class="container">All My Contacts</div>
-
-<ul>
-  <% @users.joins(:contacts).each do |contact| %>
-  <%# <li>
-
-  </li>
-
-  <li>
-  </li>
-</ul> %>
 
 
-<%#
-    <%= contact.nickname %>
-    <%# <%= contact.member.phone_number %>
+<% current_user.member.splits.each do |split| %>
+  <% split.members.each do |member| %>
 
-
-<% @splits.each do |split| %>
-
+    <% if (member.given_nickname(current_user)).nil? %>
+      <%= "Test" %>
+    <<% else %>>
+      <%= member.given_nickname(current_user) %>
+    <% end %>
+  <% end %>
 <% end %>
