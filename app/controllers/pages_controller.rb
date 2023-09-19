@@ -3,7 +3,12 @@ class PagesController < ApplicationController
 
   def index
     @splits = Split.all
+    @contacts = Contact.all
   end
+
+  # def show
+  #   @bill = Bill.find(params[:id])
+  # end
 
   def home
     if user_signed_in?

@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
 
   resources :items, only: %i[destroy]
+  resources :pages, only: %i[index show]
 
 end
 

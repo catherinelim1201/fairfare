@@ -24,21 +24,13 @@
 
       <div class="all-taxes" data-bills-manual-input-target="taxInputElement">
 
-          <%= f.input :taxes, input_html: { min: '0' } %>
-          <%= f.input :service_charge, input_html: { min: '0' } %>
-          <%= f.input :discount, input_html: { min: '0' } %>
+        <%= f.input :taxes, input_html: { min: '0' } %>
+        <%= f.input :service_charge, input_html: { min: '0' } %>
+        <%= f.input :discount, input_html: { min: '0' } %>
 
-          <%= f.submit  %>
+        <%= f.submit "Continue" %>
 
-
-          </div>
-        </div>
       </div>
-
     <% end %>
   </div>
 </div>
-
-
-<%#
-<%= link_to "Continue", split_bill_items_path(split: @split_id, bill: @bill.id) %>

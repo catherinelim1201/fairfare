@@ -4,12 +4,5 @@
   <%= ff.input :quantity, input_html: { min: '0' } %>
 
   <div data-action="click->bills-manual-input#removeInput">del</div>
-<%# this link doesn't show on the browswer %>
-  <%# <% if ff.object.id %>
-    <%#= link_to "Remove Item", new_split_bill_item_path(ff.object), data: { "turbo-method": :delete } %>
-  <%# end %>
-
-  <%# the link below appears on browser %>
-  <%#= link_to "Delete",  new_split_bill_item_path, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
 
 </div>
