@@ -59,7 +59,6 @@ class ItemsController < ApplicationController
     # redirect_to edit_bill_path(@bill)
   end
 
-
   private
 
   def item_params
