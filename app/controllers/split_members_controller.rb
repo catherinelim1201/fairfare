@@ -4,7 +4,9 @@ class SplitMembersController < ApplicationController
     # Check if member exist (with phone_number)
     @member = Member.find_by(phone_number: params[:phone_number])
     # If member doesn't exist, create member
-    @member = Member.create(phone_number: params[:phone_number]) if @member.nil?
+    if @member.nil?
+      @member = Member.create(phone_number: params[:phone_number])
+    end
 
     # Make member a contact
     @contact = Contact.create(
@@ -17,13 +19,10 @@ class SplitMembersController < ApplicationController
     @split_member = SplitMember.new(split_member_params)
     @split_member.member = @member
 
-    @available_contacts = []
-
     if @split_member.save
       redirect_to split_add_members_path(@split_member.split), notice: "#{nickname} added as contact!"
     else
-      @split = Split.find(params[:split_id])
-      render 'splits/add_members', status: :unprocessable_entity
+
     end
   end
 

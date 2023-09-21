@@ -6,16 +6,67 @@
   }
 }
 
-.payer.dropdown button {
+.dropdown-toggle {
   border-radius: 10px;
   background-color: $ff-red;
   margin: 4px 6px 4px 0;
   border: none;
 
-  h2 {
-    align-items: center;
+  // h2 {
+  //   align-items: center;
+  // }
+}
+
+.dropdown.payer {
+  align-items: center;
+
+  p {
+    margin-top: 0;
   }
 }
+
+ul.dropdown-menu {
+  border-radius: 15px;
+}
+
+.dropdown-menu a {
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-menu button.person {
+  width: calc(100% - 8px);
+
+}
+
+.dropdown-menu .person {
+  justify-content: space-evenly;
+  border-radius: 20px;
+  margin: 4px;
+
+  .person-details {
+    align-items: center;
+  }
+
+  img.avatar {
+    aspect-ratio: 1;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  p {
+    margin-bottom: 0;
+    margin-right: 10px;
+  }
+}
+
+.person.delete {
+  padding: 16px;
+}
+
+
+// <%# ------------------------------------------------------------- %>
 
 .bill-items, .bill-headers {
   p, h3 {
@@ -49,21 +100,23 @@
   }
 }
 
-.person {
-  align-items: center;
-  margin: 20px auto;
-  justify-content: space-between;
-  width: 80%;
+// .person {
+//   align-items: center;
+//   margin: 20px auto;
+//   justify-content: space-between;
+//   width: 80%;
 
-  p {
-    margin: 4px 6px;
-  }
+//   p {
+//     margin: 4px 6px;
+//   }
+// }
+
+.removed-white {
+  background-color: rgb(199, 196, 196)!important;
 }
 
-button.grey {
-  color: rgb(199, 196, 196);
-}
-
-button.green {
-  color: $ff-green;
+.added-green {
+  background-color: $ff-green!important;
+  color: white!important;
+  font-weight: bold;
 }

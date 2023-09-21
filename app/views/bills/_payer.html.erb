@@ -1,34 +1,42 @@
- <div data-controller="payer-dropdown"
-  data-payer-dropdown-has-payer-value="<%= member.payer?(bill) %>"
-  data-payer-dropdown-split-id-value="<%= split.id %>"
-  data-payer-dropdown-bill-id-value="<%= bill.id %>"
-  data-payer-dropdown-payer-id-value="<%= member.payer?(bill) ? member.payer_id(bill) : nil %>">
+ <div data-controller="payers"
+  data-payers-has-payer-value="<%= member.payer?(bill) %>"
+  data-payers-split-id-value="<%= split.id %>"
+  data-payers-bill-id-value="<%= bill.id %>"
+  data-payers-payer-id-value="<%= member.payer?(bill) ? member.payer_id(bill) : nil %>">
 
   <%# <%= render "form", payer: payer %>
 
   <% if member.payer?(bill) %>
 
-    <%= link_to "Delete",
-        split_bill_payer_path(split.id, bill.id, member.payer_id(bill)),
-        data: {turbo_method: :delete}
-      %>
-
-  <% else %>
-    <%= simple_form_for([split, bill, payer], html: { data: {
-      payer_dropdown_target: "form",
-      action: "submit->payer-dropdown#toggle"} }) do |f|  %>
-      <%= hidden_field_tag "member_id", member.id %>
-
-      <%# <%= hidden_field_tag "remove", false %>
-      <div class="d-flex person">
-        <div class="d-flex">
+    <%= link_to split_bill_payer_path(split.id, bill.id, member.payer_id(bill)),
+        data: {
+          action: 'click->payers#delete',
+          turbo_method: :delete,
+          payers_target:"checkbox"
+        },
+        class: "person d-flex delete" do %>
+        <div class="d-flex person-details">
           <img class="avatar" alt="avatar" src="https://kitt.lewagon.com/placeholder/users/cveneziani" />
           <p><%= member.given_nickname(current_user) %></p>
         </div>
-        <%= button_tag "", type:  "submit", class:"grey", style:"background:none; padding:0px; border:none;", data: { payer_dropdown_target:"checkbox" } do %>
-          <i class="fa-solid fa-square-check" ></i>
-        <% end %>
-      </div>
+      <% end %>
+
+
+  <% else %>
+    <%= simple_form_for([split, bill, payer], html: { data: {
+      payers_target: "form",
+      action: "submit->payers#toggle"} }) do |f|  %>
+      <%= hidden_field_tag "member_id", member.id %>
+
+      <%# <%= hidden_field_tag "remove", false %>
+      <%= button_tag "", type:  "submit", class:"d-flex person", style:"padding:14px; border:none;", data: { payers_target:"checkbox" } do %>
+        <div class="d-flex person-details">
+          <img class="avatar" alt="avatar" src="https://kitt.lewagon.com/placeholder/users/cveneziani" />
+          <p><%= member.given_nickname(current_user) %></p>
+        </div>
+          <%# <i class="fa-solid fa-square-check" ></i> %>
+      <% end %>
+
     <% end %>
 
   <% end %>

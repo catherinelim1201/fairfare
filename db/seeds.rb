@@ -127,97 +127,152 @@ members_without_accounts.first(3).each_with_index do |member, index|
 end
 # # ----------------------------------------------------
 
-puts "============= Creating splits ============= "
-puts "\n[1 / 11] Clearing old data"
-Split.destroy_all
+if seed_splits
+  puts "\n\n===== Creating splits =====\n"
 
-# split
-puts "\n[2 / 11] Creating split"
-split = Split.create!(
-  status: 'draft',
-  name: 'Ah Hua spleetz',
-  date: Date.today,
-  invite_code: '123123123',
-  user: zohan_user
-)
+  puts 'Clearing old data...'
 
-puts "\n[3 / 11] Creating split members"
-# split members
-[members_with_accounts.sample(2), members_without_accounts.sample(2)].flatten.each do |member|
-  split.members << member
-  puts "        - added user"
+  def split_date
+    Date.today + rand(10).days
+  end
+
+  def six_digit_code
+    rand(1_000_000).to_s.rjust(6, '0')
+  end
+  # statuses = ["draft", "pending", "complete"]
+
+  split1 = Split.create!(
+    user: zohan_user,
+    status: "draft",
+    name: "my first split",
+    date: split_date,
+    invite_code: six_digit_code
+  )
+  puts "Created #{split1.name}."
+
+  split2 = Split.create!(
+    user: zohan_user,
+    status: "pending",
+    name: "lunch meal",
+    date: split_date,
+    invite_code: six_digit_code
+  )
+  puts "created #{split2.name}."
+
+  split3 = Split.create!(
+    user: zohan_user,
+    status: "complete",
+    name: "dinner meal",
+    date: split_date,
+    invite_code: six_digit_code
+  )
+  puts "created #{split3.name}."
+
+
+
+  Split.all.each do |split|
+    split.members << split.user.member
+    members = Member.where.not(user:split.user).sample(2)
+    members.each do |member|
+      split.members << member
+    end
+  end
 end
 
+# ----------------------------------------------------
 
-# 2 bill
-puts "\n[5 / 11] Creating first bill"
-bill1 = Bill.create!(
-  merchant: 'Ah Hua Seafood',
-  split: split,
-  date: Date.today,
-  taxes: 1260,
-  total_amount: 7960,
-  discount: 0
-)
+if seed_bills_and_items
+  def create_items(bill)
+    puts "   creating items..."
+    rand(1..5).times do
+      item = Item.create!(
+        name: Faker::Food.dish,
+        bill:,
+        quantity: rand(1..3),
+        price: rand(100..10_000)
+      )
+      puts "   - created #{item.name}"
+    end
+  end
 
-puts "\n[6 / 11] Assigning payer"
-# payer(s)
-Payer.create!(
-  bill: bill1,
-  member: split.members.last
-)
+  def create_payers(bill)
+    puts "    adding payers"
+    bill_members = bill.split.members
+
+    rand(1..3).times do
+      payer = Payer.create!(
+        bill:,
+        member: bill_members[(rand(bill_members.count))]
+      )
+      puts "    -created payers"
+    end
+  end
+
+  def assign_members_to_items(bill)
+    puts "    adding members (consumers) to items"
+    bill_members = bill.split.members
+    items = bill.items
+    items.each do |item|
+      rand(1..3).times do
+        item_member = ItemMember.create!(
+          item:,
+          member: bill_members[rand(bill_members.count)]
+        )
+        puts "    -created member for item #{item.name}"
+      end
+    end
+  end
+
+  def create_bills(split)
+    puts "\nCreating bills for split: #{split.name}..."
+    rand(1..3).times do
+      merchant = Faker::Restaurant.name
+      puts "Creating Bill for #{merchant}"
+      bill = Bill.create!(merchant:, split:)
+      create_items(bill)
+      create_payers(bill)
+      assign_members_to_items(bill)
+      puts "created Bill for #{merchant}\n\n"
+    end
+  end
+
+  puts "\n\n===== Creating bills & items =====\n"
+
+  puts 'clearing old data...'
 
 
-# items
-puts "\n[7 / 11] Creating items"
-item1 = Item.create!(
-  bill: bill1,
-  name: 'Topping Omelette',
-  price: 300,
-  quantity: 1
-)
-puts "        - Created item"
+  Split.all.each { |split| create_bills(split) }
 
-item2 = Item.create!(
-  bill: bill1,
-  name: 'Monster Combo Fish',
-  price: 3200,
-  quantity: 1
-)
-puts "        - Created item"
+end
 
+# ----------------------------------------------------
 
-item3 = Item.create!(
-  bill: bill1,
-  name: 'Monster Combo Curry',
-  price: 3200,
-  quantity: 1
-)
-puts "        - Created item"
+# THIS IS JUST FOR TESTING THE O$P$ CALCULATON LOGIC (in splits#show) - CAN BE REMOVED IF NOT NEEDED
 
-puts "\n[8 / 11] Assigning members to items"
-# item members
-item1.members << split.members.first
-split.members.each { |member| item2.members << member }
-split.members.last(2).each { |member| item3.members << member }
+# Create users for members
+users = []
+4.times do
+  users << User.create(email: Faker::Internet.email,
+                      password: 'password',
+                      password_confirmation: 'password')
+end
 
+# Create members
+members = []
+users.each do |user|
+  members << Member.create(user: user, phone_number: Faker::PhoneNumber.cell_phone)
+end
 
-puts "\n[9 / 11] Creating second bill"
-bill2 = Bill.create!(
-  merchant: 'Mo\'s Diner',
-  split:,
-  date: Date.today,
-  taxes: 387,
-  total_amount: 4257,
-  discount: 0
-)
+# Create contacts for members
+members.each do |member|
+  other_members = members.reject { |m| m.id == member.id }
+  other_members.each do |contact_member|
+    Contact.create(nickname: Faker::Name.first_name, user: member.user, member: contact_member)
+  end
+end
 
-puts "\n[9 / 11] Assigning payer"
-# payer(s)
-Payer.create!(
-  bill: bill2,
-  member: split.members.first
-)
+# Create split with one of the members
+split = Split.create(name: Faker::Lorem.word, date: Date.today, user: users.first)
 
 puts "\n[10 / 11] Creating items"
 # items
@@ -253,14 +308,6 @@ item4 = Item.create!(
 )
 puts "          - Created item"
 
-item5 = Item.create!(
-  bill: bill2,
-  name: 'Chicken Potato',
-  price: 850,
-  quantity: 1
-)
-puts "          - Created item"
-
 puts "\n[11 / 11] Assigning members to items"
 split.members.first(2).each { |member| item1.members << member }
 split.members.last(3).each { |member| item2.members << member }
@@ -275,52 +322,52 @@ puts "Done"
 
 #   puts 'Clearing old data...'
 
-#   def split_date
-#     Date.today + rand(10).days
-#   end
+  def split_date
+    Date.today + rand(10).days
+  end
 
-#   def six_digit_code
-#     rand(1_000_000).to_s.rjust(6, '0')
-#   end
-#   # statuses = ["draft", "pending", "complete"]
+  def six_digit_code
+    rand(1_000_000).to_s.rjust(6, '0')
+  end
+  # statuses = ["draft", "pending", "complete"]
 
-#   split1 = Split.create!(
-#     user: zohan_user,
-#     status: "draft",
-#     name: "my first split",
-#     date: split_date,
-#     invite_code: six_digit_code
-#   )
-#   puts "Created #{split1.name}."
+  split1 = Split.create!(
+    user: zohan_user,
+    status: "draft",
+    name: "my first split",
+    date: split_date,
+    invite_code: six_digit_code
+  )
+  puts "Created #{split1.name}."
 
-#   split2 = Split.create!(
-#     user: zohan_user,
-#     status: "pending",
-#     name: "lunch meal",
-#     date: split_date,
-#     invite_code: six_digit_code
-#   )
-#   puts "created #{split2.name}."
+  split2 = Split.create!(
+    user: zohan_user,
+    status: "pending",
+    name: "lunch meal",
+    date: split_date,
+    invite_code: six_digit_code
+  )
+  puts "created #{split2.name}."
 
-#   split3 = Split.create!(
-#     user: zohan_user,
-#     status: "complete",
-#     name: "dinner meal",
-#     date: split_date,
-#     invite_code: six_digit_code
-#   )
-#   puts "created #{split3.name}."
+  split3 = Split.create!(
+    user: zohan_user,
+    status: "complete",
+    name: "dinner meal",
+    date: split_date,
+    invite_code: six_digit_code
+  )
+  puts "created #{split3.name}."
 
 
 
-#   Split.all.each do |split|
-#     split.members << split.user.member
-#     members = Member.where.not(user:split.user).sample(2)
-#     members.each do |member|
-#       split.members << member
-#     end
-#   end
-# end
+  Split.all.each do |split|
+    split.members << split.user.member
+    members = Member.where.not(user:split.user).sample(2)
+    members.each do |member|
+      split.members << member
+    end
+  end
+end
 
 # # ----------------------------------------------------
 
@@ -451,7 +498,7 @@ puts "Done"
 #     Payer.create!(bill: bill, member: payer)
 #   end
 
-#   bills << bill
-# end
+  bills << bill
+end
 
-# puts "Seeding is complete. Created #{Split.count} split with #{Bill.count} bills and #{Item.count} items. Created #{Member.count} members with #{Contact.count} contacts."
+puts "Seeding is complete. Created #{Split.count} split with #{Bill.count} bills and #{Item.count} items. Created #{Member.count} members with #{Contact.count} contacts."

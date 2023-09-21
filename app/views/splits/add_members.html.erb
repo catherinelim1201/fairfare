@@ -1,53 +1,39 @@
-<div class="container mt-4" data-controller="filter-contacts" data-filter-contacts-split-id-value="<%= @split.id %>">
-  <h1 class="text-center">Add contacts to your split!</h1>
-  <br>
-  <div class="row">
-    <div class="col-10 mx-auto">
-      <div class="form">
-        <%= simple_form_for([@split, @split_member], html: { data: { "filter-contacts-target" => "form" } }) do |f| %>
-          <div class="mt-2 mb-3 tel required contact_nickname">
-            <label class="form-label tel required" for="contact_nickname">Nickname <abbr title="required">*</abbr></label>
-            <input data-filter-contacts-target="input" class="form-control string tel required" placeholder="Start typing to filter your contacts" data-action="keyup->filter-contacts#filterByNickname" type="text" name="nickname" id="contact_nickname" required>
-          </div>
+<div class="container" data-controller="filter-contacts" data-filter-contacts-split-id-value="<%= @split.id %>">
 
-          <div data-filter-contacts-target="create" class="d-none">
-            <div class="mb-3 tel required member_phone_number">
-              <label class="form-label tel required" for="member_phone_number">Phone Number <abbr title="required">*</abbr></label>
-              <input data-filter-contacts-target="input" required class="form-control string tel required" placeholder="Enter phone number" data-action="keyup->filter-contacts#validateForm" type="text" name="phone_number" id="member_phone_number">
-            </div>
+  <div class="form">
+    <h1>Add members</h1>
+    <%= simple_form_for([@split, @split_member], html: { data: { "filter-contacts-target" => "form" } }) do |f| %>
+      <div class="mb-3 tel required contact_nickname">
+        <label class="form-label tel required" for="contact_nickname">Nickname <abbr title="required">*</abbr></label>
+        <input data-filter-contacts-target="input" class="form-control string tel required" placeholder="Start typing to filter your contacts" data-action="keyup->filter-contacts#filterByNickname" type="text" name="nickname" id="contact_nickname" required>
+      </div>
 
-            <%= f.association :split, as: :hidden %>
+      <div data-filter-contacts-target="create" class="d-none">
+        <div class="mb-3 tel required member_phone_number">
+          <label class="form-label tel required" for="member_phone_number">Phone Number <abbr title="required">*</abbr></label>
+          <input data-filter-contacts-target="input" required class="form-control string tel required" placeholder="Enter phone number" data-action="keyup->filter-contacts#validateForm" type="text" name="phone_number" id="member_phone_number">
+        </div>
 
-            <%= f.submit 'Create', disabled: 'disabled', data: { filter_contacts_target: 'submit' } %>
-            <p class="back-button" data-action="click->filter-contacts#back">Back</p>
-          </div>
-          <p class="create-button" data-filter-contacts-target="toggle" data-action="click->filter-contacts#toggle">Create a new contact</p>
-        <% end %>
+        <%= f.association :split, as: :hidden %>
+
+        <%= f.submit 'Create', disabled: 'disabled', data: { filter_contacts_target: 'submit' } %>
+        <p class="split-button" data-action="click->filter-contacts#back">Back</p>
       </div>
-    </div>
+      <p class="split-button" data-filter-contacts-target="toggle" data-action="click->filter-contacts#toggle">Create a new contact</p>
+    <% end %>
   </div>
   <br>
-  <div class="row">
-    <div class="col-10 mx-auto">
-      <div class="split-members">
-        <h2 class="mt-2">Contacts included in split</h2>
-          <% @split.members.each do |member| %>
-            <p><%= member.given_nickname(current_user) %> (<%= member.phone_number %>)</p>
-          <% end %>
-      </div>
-    </div>
+  <div class="split-members">
+    <h2>Contacts included in split</h2>
+      <% @split.members.each do |member| %>
+        <p><%= member.given_nickname(current_user) %> <%= member.phone_number %></p>
+      <% end %>
   </div>
   <br>
-  <div class="row">
-    <div class="col-10 mx-auto">
-      <div class="contact-list">
-        <%= render "splits/contact_list", available_contacts: @available_contacts, split: @split %>
-      </div>
-    </div>
+  <div class="contact-list">
+    <%= render "splits/contact_list", available_contacts: @available_contacts, split: @split %>
   </div>
-  <br>
-  <div class="col-10 mx-auto">
-    <%= link_to "Add a bill", select_split_bills_path, class: "split-button" %>
-    <%= link_to "Back", new_split_path, class: "split-button" %>
-  </div>
+
+  <%= link_to "Add a bill", select_split_bills_path, class: "split-button" %>
+  <%= link_to "Back", new_split_path, class: "split-button" %>
 </div>

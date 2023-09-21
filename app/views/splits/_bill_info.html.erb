@@ -7,15 +7,13 @@
   <% @split.bills.each do |bill| %>
     <div class="my-5">
       <h5><%= bill.merchant %></h5>
-      <p><%= bill.get_bill_stats %></p>
     </div>
   <% end %>
 
   <h3>Settlements:</h3>
-  <%= @split.final_calculation %>
-  <%# @split.get_split_stats.each do |stat| %>
+  <% @split.get_split_stats.each do |stat| %>
     <div class="my-5">
-      <h5><%#= "#{stat[:payee_member].given_nickname(current_user)} owes #{stat[:payer_member].given_nickname(current_user)} SGD#{stat[:amount]/100.00}" %></h5>
+      <h5><%= "#{stat[:payee_member].given_nickname(current_user)} owes #{stat[:payer_member].given_nickname(current_user)} SGD#{stat[:amount]/100.00}" %></h5>
     </div>
-  <%# end %>
+  <% end %>
 </div>

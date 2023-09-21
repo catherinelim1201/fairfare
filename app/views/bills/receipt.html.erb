@@ -9,17 +9,14 @@
     <div data-controller="preview-image-uploaded">
         <%= image_tag "upload-image-preview.jpeg", class:"img-fluid", style: "height: 300px;", data: { preview_image_uploaded_target: "previewImage" }%>
         <div class="my-5">
-          <%= form_with url: upload_split_bills_path(@split), method: :post do  |form| %>
-
-            <div class="d-flex">
-              <%= form.label :image, 'Upload Photo', class:"pe-3" %>
-              <%= form.file_field :image, data: { action: "change->preview-image-uploaded#change" } %>
-            </div>
-            <div class="my-3 text-center">
-              <%= submit_tag "Submit", class:"btn btn-primary" %>
-            </div>
-          <% end %>
-        </div>
+          <%= form_with url: upload_split_bills_path(@split), method: :post, class: "d-flex" do  |form| %>
+            <%= form.label :image, 'Upload Photo', class:"pe-3" %>
+            <%= form.file_field :image, data: { action: "change->preview-image-uploaded#change" } %>
+          </div>
+          <div class="my-5">
+            <%= submit_tag "Submit", class:"btn btn-primary" %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

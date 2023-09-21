@@ -1,38 +1,16 @@
-<div class="container-fluid bill-index" data-controller="edit-bill" data-action="click->edit-bill#closeForm">
+<div class="container-fluid bill-index">
   <div class="bill-description">
     <%# <%= link_to collaborate_path %>
     <%# <%= link_to edit_bill_path %>
 
     <h1 class="fw-bold"><%= "#{@split.name}" %></h1>
 
-    <div class="payer dropdown d-flex fw-bold">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="payer dropdown d-flex">
+      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
         Select Person(s)
       </button>
       <ul class="dropdown-menu">
         <% @split_members.each do |member| %>
-          <div data-controller="payer-dropdown" data-payer-dropdown-has-payer-value="<%= member.payer?(@bill) %>" data-payer-dropdown-split-id-value="<%= @split.id %>" data-payer-dropdown-bill-id-value="<%= @bill.id %>">
-
-            <%# <%= render "form", payer: @payer %>
-
-            <%= simple_form_for([@split, @bill, @payer], html: { data: {
-              payer_dropdown_target: "form",
-              action: "submit->payer-dropdown#check"} }) do |f|  %>
-              <%= hidden_field_tag "member_id", member.id %>
-              <%= hidden_field_tag "remove", false %>
-              <div class="d-flex person">
-                <div class="d-flex">
-                  <img class="avatar" alt="avatar" src="https://kitt.lewagon.com/placeholder/users/cveneziani" />
-                  <p><%= member.given_nickname(current_user) %></p>
-                </div>
-                <%= button_tag "", type:  "submit", class:"add", style:"background:none; padding:0px; border:none;", data: { payer_dropdown_target:"checkbox" } do %>
-                  <i class="fa-solid fa-square-check" ></i>
-                <% end %>
-              </div>
-            <% end %>
-
-          </div>
-
           <%= render 'bills/payer', member: member, bill: @bill, split: @split, payer: @payer %>
         <% end %>
       </ul>
@@ -59,42 +37,6 @@
     <div class="add-people-button">
       <div class="item-row">
         <% @items.each do |item| %>
-          <div class="bill-summary-item-card row">
-            <div class="col-10">
-
-              <%= simple_form_for :item,  data: { edit_bill_target: "itemDescriptions", action: "focusout->edit-bill#updateItem" } do |f| %>
-
-                <div class="row form-toggler" data-action="click->edit-bill#toggleForm">
-                  <div class="col-8 form-toggler">
-                    <p class="item-value"><%= "#{item.name}" %></p>
-                  </div>
-                  <div class="col-2 form-toggler">
-                    <p class="item-value"><%= "#{item.quantity}" %></p>
-                  </div>
-                  <div class="col-2 form-toggler">
-                    <p class="item-value"><%= "#{item.price}" %></p>
-                  </div>
-
-                  <div class="col-7" >
-                    <%= f.input :name, input_html: { class: "item-input",  value: item.name }, label_html: { class: "item-input"}  %>
-                  </div>
-
-                  <div class="col-3">
-                    <%= f.input :quantity, input_html: { class: "item-input",  value: item.quantity},  label_html: { class: "item-input"}  %>
-                  </div>
-
-                  <div class="col-2" >
-                    <%= f.input :price, input_html: { class: "item-input",  value: item.price},  label_html: { class: "item-input"}%>
-                  </div>
-
-
-                </div>
-              <% end %>
-            </div>
-
-            <p class="col-2 people" data-action="click->add-people#appear">Add people</p>
-          </div>
-          <%# </form> %>
           <div data-controller="add-people-button">
             <div class="bill-summary-item-card row">
               <div class="col-7">
@@ -129,29 +71,13 @@
 
   <div class="bill-footer row">
     <div class="tax-discounts col-6">
-      <p>Discount: $<%= @bill.discount %></p>
-      <p>Tax: $<%= @bill.taxes %></p>
-      <p>Service Charge: $<%= @bill.service_charge %></p>
+      <p>Tax (<%=  %>%):<%= "TAX AMT HERE" %></p>
+      <p>Discount (<%= "%discount" %>%):<%= "-DISCOUNTED AMT HERE" %></p>
     </div>
     <div class="add-receipt col-6 justify-content-center">
       <p>Add another receipt?</p>
-      <%= link_to "<button>Yes</button>".html_safe, select_split_bills_path %>
-      <%= link_to "<button>No</button>".html_safe, split_path(@split) %>
+      <button>Yes</button>
+      <button>No</button>
     </div>
   </div>
 </div>
-
-
-<style>
-  .show-form .item-input{
-    display: inline !important;
-  }
-
-  .item-input {
-    display: none;
-  }
-
-  .show-form .item-value {
-    display: none;
-  }
-</style>

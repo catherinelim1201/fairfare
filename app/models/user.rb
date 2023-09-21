@@ -4,9 +4,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  # to allow new registration form to render phone_number field
-  attr_accessor :phone_number
-
   has_many :messages
 
   has_many :splits, dependent: :destroy

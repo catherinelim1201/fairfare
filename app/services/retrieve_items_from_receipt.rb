@@ -9,7 +9,7 @@ class RetrieveItemsFromReceipt < ApplicationService
 
     date = data.dig("date", "value")
     taxes = data.dig("taxes", 0, "value")
-    total_amount = data.dig("total_amount", "value") * 100
+    total_amount = data.dig("total_amount", "value")
 
     items = data["line_items"]
     merchant_name = data.dig("supplier_name", "value")
@@ -23,8 +23,8 @@ class RetrieveItemsFromReceipt < ApplicationService
 
     items.map do |item|
       item_name = item["description"]
-      quantity = item["quantity"] || 1
-      total_item_cost = (item["total_amount"] * 100) || 0
+      quantity = item["quantity"]
+      total_item_cost = item["total_amount"]
 
       Item.create!(
         bill_id: @bill.id,

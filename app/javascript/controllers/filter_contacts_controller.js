@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="filter-contacts"
 export default class extends Controller {
-  static targets = ["form", "contacts", "create", "toggle", 'submit', 'input']
+  static targets = ["form", "contacts"]
   static values = {
     splitId: String
   }
@@ -16,7 +16,6 @@ export default class extends Controller {
   filterByNickname(event) {
     this.nickname = event.target.value
     this.filterContacts()
-    this.validateForm()
   }
 
   filterContacts() {
@@ -25,30 +24,6 @@ export default class extends Controller {
       .then((data) => {
         // console.log(data.contacts)
         this.contactsTarget.innerHTML = data.contacts
-        if (data.total_count === 0) {
-          this.toggle()
-        } else {
-          this.back()
-        }
       })
-  }
-
-  toggle() {
-    this.createTarget.classList.remove("d-none");
-    this.toggleTarget.classList.add("d-none");
-  }
-
-  back() {
-    this.createTarget.classList.add("d-none");
-    this.toggleTarget.classList.remove("d-none");
-  }
-
-  validateForm() {
-    // if (this.inputTargets.every(input => input.value !== '')) {
-    //   this.submitTarget.disabled = false
-    // } else {
-    //   this.submitTarget.disabled = true
-    // }
-    this.submitTarget.disabled = !this.inputTargets.every(input => input.value !== '')
   }
 }

@@ -6,11 +6,11 @@
 
   <% else %>
 
-    <h2 class="mt-2">Click to add existing contacts to split</h2>
+    <h2 class="mt-4">Click to add existing contacts to split</h2>
     <ul class="list-group" >
       <% available_contacts.each do |contact| %>
         <li class="list-group-item">
-          <%= link_to "#{contact.nickname} (#{contact.member.phone_number})", split_add_existing_contact_path(split, contact.member.id) %> <br>
+          <%= link_to "#{contact.nickname} #{contact.member.phone_number}", split_add_existing_contact_path(split, contact.member.id) %> <br>
         </li>
       <% end %>
     </ul>

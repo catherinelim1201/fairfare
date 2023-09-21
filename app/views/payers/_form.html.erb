@@ -1,6 +1,6 @@
 <%= simple_form_for([@split, @bill, @payer], html: { data: {
-  payer_dropdown_target: "form",
-  action: "submit->payer-dropdown#check"} }) do |f|  %>
+  payers_target: "form",
+  action: "submit->payers#check"} }) do |f|  %>
   <%= hidden_field_tag "member_id", member.id %>
   <%= hidden_field_tag "remove", false %>
   <div class="d-flex person">
@@ -8,7 +8,7 @@
       <img class="avatar" alt="avatar" src="https://kitt.lewagon.com/placeholder/users/cveneziani" />
       <p><%= member.given_nickname(current_user) %></p>
     </div>
-    <%= button_tag "", type:  "submit", class:"add green", style:"background:none; padding:0px; border:none;", data: { payer_dropdown_target:"checkbox" } do %>
+    <%= button_tag "", type:  "submit", class:"add green", style:"background:none; padding:0px; border:none;", data: { payers_target:"checkbox" } do %>
       <i class="fa-solid fa-square-check" ></i>
     <% end %>
   </div>

@@ -22,7 +22,6 @@ class ExtractTextFromReceipt < ApplicationService
     request.set_form([['document', URI.open(@url)]], 'multipart/form-data')
 
     response = http.request(request)
-    pp JSON.parse(response.read_body)
     JSON.parse(response.read_body)
   end
 end

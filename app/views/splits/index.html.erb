@@ -2,7 +2,7 @@
   <h1 class="my-5">Your Splits so far...</h1>
   <% @splits.each do |split| %>
     <div>
-      <h5><%= link_to"#{split.name}", split_path(split), class:"text-decoration-none" %></h5>
+      <h5><%= link_to"#{split.name}", split_path(split) %></h5>
     </div>
   <% end %>
 </div>

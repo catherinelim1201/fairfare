@@ -12,8 +12,7 @@ class ContactsController < ApplicationController
             partial: "splits/contact_list",
             locals: { available_contacts: @contacts, split: @split },
             formats: [:html]
-          ),
-          total_count: @contacts.size
+          )
         }
       end
     end

@@ -16,19 +16,18 @@ export default class extends Controller {
 
     if (this.hasPayerValue === 'true') {
       console.log('hasPayer', this.hasPayerValue)
-      this.checkboxTarget.classList.add("green")
+      this.checkboxTarget.classList.add("added-green")
     }
   }
 
   toggle(event) {
     event.preventDefault()
 
-    console.log(event.target.action);
+    // console.log(event.target.action);
 
     if (this.hasPayerValue === 'false') {
 
-      this.checkboxTarget.classList.remove("grey")
-      this.checkboxTarget.classList.add("green")
+      // this.checkboxTarget.classList.add("add-green")
 
       fetch(this.formTarget.action, {
         method: "POST",
@@ -39,30 +38,24 @@ export default class extends Controller {
           return response.json()
         })
         .then((data) => {
-          console.log("data", data)
+          this.element.outerHTML = data.payer_html;
         })
     }
+  }
 
-    if (this.hasPayerValue === 'true') {
+  delete(event) {
+    event.preventDefault()
 
-      this.checkboxTarget.classList.remove("green")
-      this.checkboxTarget.classList.add("grey")
-
-      //     // THIS GREEN->GREY TOGGLE IS NOT WORKING BUT THE DELETE IS WORKING ????????
-
-
-      //     fetch(this.destroy_url, {
-      //       method: "DELETE",
-      //       headers: { "Accept": "application/json" },
-      //       // body: new FormData(this.formTarget)
-      //     })
-      //     console.log(response)
-      //       .then(response => {
-      //         return response.json()
-      //       })
-      //       .then((data) => {
-      //         console.log("data", data)
-      //       })
-    }
+    fetch(event.currentTarget.href, {
+      method: 'DELETE',
+      headers: {
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
+        Accept: 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        this.element.outerHTML = data.payer_html;
+      })
   }
 }
