@@ -101,12 +101,12 @@ end
 puts "\n\n===== Creating Contacts =====\n"
 puts 'Clearing old data...'
 
-# puts 'Adding Zohan into contacts...'
-# Contact.create!(
-#   user: zohan_user,
-#   member: zohan_member,
-#   nickname: 'The Zohan'
-# )
+puts 'Adding Zohan into contacts...'
+Contact.create!(
+  user: zohan_user,
+  member: zohan_member,
+  nickname: 'The Zohan'
+)
 
 members_with_accounts.first(3).each_with_index do |member, index|
   puts 'Adding contacts with accounts...'
@@ -227,7 +227,7 @@ item1 = Item.create!(
   price: 1090,
   quantity: 1
 )
-puts "          - Ceated item"
+puts "          - Created item"
 
 item2 = Item.create!(
   bill: bill2,
@@ -235,7 +235,7 @@ item2 = Item.create!(
   price: 1390,
   quantity: 1
 )
-puts "          - Ceated item"
+puts "          - Created item"
 
 item3 = Item.create!(
   bill: bill2,
@@ -243,7 +243,7 @@ item3 = Item.create!(
   price: 390,
   quantity: 1
 )
-puts "          - Ceated item"
+puts "          - Created item"
 
 item4 = Item.create!(
   bill: bill2,
@@ -251,7 +251,7 @@ item4 = Item.create!(
   price: 150,
   quantity: 1
 )
-puts "          - Ceated item"
+puts "          - Created item"
 
 item5 = Item.create!(
   bill: bill2,

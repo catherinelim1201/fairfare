@@ -119,7 +119,7 @@ class Member < ApplicationRecord
     items.each do |item|
       price = item.price
       quantity = item.quantity
-      share = (price * quantity) / item.members.count
+      share = (price * quantity) / (item.members.count > 0 ? item.members.count : bill.members.count)
       total += share
     end
     # for each item
